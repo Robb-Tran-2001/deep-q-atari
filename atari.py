@@ -9,10 +9,6 @@ from evaluation import evaluate
 from Logger import Logger
 
 
-def exit_handler():
-    global DQA
-    DQA.quit()
-
 IMG_SIZE = (84, 110)
 utils.IMG_SIZE = IMG_SIZE
 
@@ -88,7 +84,6 @@ if args.debug:
           '####################################################'
 
 logger = Logger(debug=args.debug, append=args.environment)
-atexit.register(exit_handler)  # Make sure to always save the model when exiting
 
 # Variables
 test_scores = []
@@ -110,6 +105,12 @@ DQA = DQAgent(env.action_space.n,
               min_epsilon=args.min_epsilon,
               load_path=args.load,
               logger=logger)
+
+def exit_handler():
+    global DQA
+    DQA.quit()
+
+atexit.register(exit_handler)  # Make sure to always save the model when exiting
 
 # Initial logging
 logger.log({
