@@ -1,6 +1,8 @@
 import numpy as np
-from keras.models import Sequential
-from keras.layers import Conv2D, Flatten, Dense
+
+import tensorflow as tf
+from tensorflow import keras
+from tensorflow.keras import layers
 
 
 class DQNetwork:
@@ -26,37 +28,37 @@ class DQNetwork:
 
         # Deep Q Network as defined in the DeepMind article on Nature
         # Ordering channels first: (samples, channels, rows, cols)
-        self.model = Sequential()
+        self.model = keras.Sequential()
 
         # First convolutional layer
-        self.model.add(Conv2D(32, 8, strides=(4, 4),
+        self.model.add(layers.Conv2D(32, 8, strides=(4, 4),
                               padding='valid',
                               activation='relu',
                               input_shape=input_shape,
                               data_format='channels_first'))
 
         # Second convolutional layer
-        self.model.add(Conv2D(64, 4, strides=(2, 2),
+        self.model.add(layers.Conv2D(64, 4, strides=(2, 2),
                               padding='valid',
                               activation='relu',
                               input_shape=input_shape,
                               data_format='channels_first'))
 
         # Third convolutional layer
-        self.model.add(Conv2D(64, 3, strides=(1, 1),
+        self.model.add(layers.Conv2D(64, 3, strides=(1, 1),
                               padding='valid',
                               activation='relu',
                               input_shape=input_shape,
                               data_format='channels_first'))
 
         # Flatten the convolution output
-        self.model.add(Flatten())
+        self.model.add(layers.Flatten())
 
         # First dense layer
-        self.model.add(Dense(512, activation='relu'))
+        self.model.add(layers.Dense(512, activation='relu'))
 
         # Output layer
-        self.model.add(Dense(self.actions))
+        self.model.add(layers.Dense(self.actions))
 
         # Load the network weights from saved model
         if load_path is not None:
@@ -104,7 +106,7 @@ class DQNetwork:
         h = self.model.fit(x_train,
                            t_train,
                            batch_size=self.minibatch_size,
-                           nb_epoch=1)
+                           epochs=1)
 
         # Log loss and accuracy
         if self.logger is not None:
