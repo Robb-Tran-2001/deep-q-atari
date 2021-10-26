@@ -24,9 +24,11 @@ class Logger:
     def log(self, data):
         if not self.debug:
             try:
-                logfile = open(self.path + 'log.txt', 'a')
+                # added explicit positional param name
+                logfile = open(self.path + 'log.txt', mode = 'a') 
             except IOError:
-                print 'Logger:log IO error while opening log file %s' % self.path + 'log.txt'
+                # not sure why %s used instead of regular string concat but should be 3.6 compliant
+                print 'Logger:log IO error while opening log file %s' % self.path + 'log.txt' 
                 return
             if type(data) is dict:
                 for k in data:
