@@ -77,6 +77,8 @@ class DQAgent:
         if force_random or is_random:
             return randint(0, self.actions - 1)
         else:
+            # print("HELLOOOAAAAAAAAAAAAAAAA")
+            # print(state)
             q_values = self.DQN.predict(state)
             return np.argmax(q_values)
 
@@ -87,6 +89,9 @@ class DQAgent:
         :return: an action index corresponding to the maximum Q-value in the 
             given state
         """
+
+        print("HELLOOOAAAAAAAAAAAAAAAA")
+        print(state)
         q_values = self.DQN.predict(state)
         idxs = np.argwhere(q_values == np.max(q_values)).ravel()
         return np.random.choice(idxs)
